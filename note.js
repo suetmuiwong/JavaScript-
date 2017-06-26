@@ -3,22 +3,22 @@
     引用类型：arry object function
 1、避免创建三个全局变量（函数）对环境造成污染，利用对象点语法可以指创建（使用）一个变量，使用函数原型可以减少创建时重新函数的次数。
   这是一个可以看做类的函数
-var checkObject = function(){};
-checkObject.prototype = function(){
-    checkName:function(){
-        return this;
-    },
-    checkEmail:function(){
-        return this
-    },
-    checkPassword:function(){
-        return this
+    var checkObject = function(){};
+    checkObject.prototype = function(){
+        checkName:function(){
+            return this;
+        },
+        checkEmail:function(){
+            return this
+        },
+        checkPassword:function(){
+            return this
+        }
     }
-}
-var use = new checkObject();
-use.checkName()
-use.checkEmail()
-use.checkPassword()
+    var use = new checkObject();
+    use.checkName()
+    use.checkEmail()
+    use.checkPassword()
 
 2、面向对象编程（类）：将需求抽象成一个对象，然后针对这个对象分析其特征（属性）与动作（方法）。
    面向对象编程思想的特点是封装。
