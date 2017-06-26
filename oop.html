@@ -1,0 +1,129 @@
+<!DOCTYPE>
+<html>
+<head>
+  <title>理解面向对象的一个实例</title>
+  <script>
+
+  //理解面向对象的一个实例
+  function PlaceFieldEditor(id,value,parentEle) {
+    this.id = id;
+    this.value = value;
+    this.parentEle = parentEle;
+    this.initValue = value;
+    this.initElements();
+    this.initEvents();
+  }
+  PlaceFieldEditor.prototype = {
+    constructor:PlaceFieldEditor,
+    //初始化所有元素
+    initElements:function () {
+        //this.txtEle =document.creatElement("<span/>");
+        this.txtEle =document.createElement('span');
+        this.txtEle.innerText = this.value;
+        this.textEle =document.createElement("input");
+        this.textEle.setAttribute("type","text");
+        this.textEle.setAttribute("value",this.value);
+        this.btnWapper = document.createElement("div");
+        this.btnWapper.setAttribute('style','display:inline');
+        this.saveBtn =document.createElement("input");
+        this.saveBtn.setAttribute('type','button');
+        this.saveBtn.setAttribute("value",'保存');
+        this.cancelBtn =document.createElement("input");
+        this.cancelBtn.setAttribute('type','button');
+        this.cancelBtn.setAttribute("value",'取消');
+        this.btnWapper.appendChild(this.saveBtn);
+        this.btnWapper.appendChild(this.cancelBtn);
+        this.parentEle.appendChild(this.txtEle);
+        this.parentEle.appendChild(this.textEle);
+        this.parentEle.appendChild(this.btnWapper);
+      //  console.log(this.parentEle)
+        this.convertToReadable();
+      },
+      //初始化所有事件
+      initEvents:function () {
+          var that = this;
+          this.txtEle.addEventListener('click',function(event){
+          that.convertToEditable();
+          });
+          this.cancelBtn.addEventListener('click',function(event){
+            that.cancel();
+          });
+          this.saveBtn.addEventListener('click',function (event) {
+            that.save();
+          })
+        },
+        //切换到编辑模式
+        convertToEditable:function () {
+            this.txtEle.style.display = 'none';
+            //this.txtEle.hide();
+            this.textEle.style.display = 'block';
+            //this.textEle.show();
+            this.textEle.focus();
+            if(this.getValue() == this.initValue){
+              this.textEle.setAttribute("value",'');
+              //this.textEle.val('');
+            }
+            this.btnWapper.style.display = 'block';
+            //this.btnWapper.show();
+          },
+          //点击保存
+          save:function () {
+            //this.setValue(this.textEle.val());
+            this.setValue(this.textEle.value);
+            this.txtEle.innerHTML =this.getValue().replace(/\n/g,"<br/>");
+            var url = "id="+ this.id+'$value'+this.value;
+            this.convertToReadable();
+          },
+          //点击取消
+          cancel:function(){
+            //this.textEle.val(this.getValue());
+            this.textEle.value = this.getValue();
+            this.convertToReadable();
+          },
+          //切换到查看模式
+          convertToReadable:function () {
+            //this.txtEle.show();
+            this.txtEle.style.display = 'block';
+            this.textEle.style.display = 'none';
+            this.btnWapper.style.display = 'none';
+            //this.textEle.hide();
+            //this.btnWapper.hide();
+          },
+          setValue:function(value){
+            this.value = value;
+          },
+          getValue:function(){
+            return this.value;
+          }
+      };
+
+  window.onload =function(){
+    var ul = document.getElementById('ulId');
+    var lis = ul.getElementsByTagName('li');
+    for(var i= 0;i<lis.length;i++){
+      var id = lis[i].getAttribute('id');
+      var value = "请输入成绩";
+      var parentEle = lis[i];
+      new PlaceFieldEditor(id,value,parentEle);
+    }
+  }
+
+</script>
+<style>
+  body{
+    font-size:12px;
+    color:#333;
+  }
+  ul li{
+    line-height:30px;
+  }
+</style>
+</head>
+<body>
+        <ul id = 'ulId'>
+            <li id ='1'>张三：</li>
+            <li id ='2'>李四：</li>
+            <li id ='3'>王五：</li>
+        </ul>
+</body>
+</html>

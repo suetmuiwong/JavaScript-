@@ -675,4 +675,44 @@ H:多态（同一个方法多种调用方式）
 5.原型模式（用原型实例指向创建对象的类，使用于创建新的对象的类共享原型对象的属性以及方法）
 
 
-6.单例模式（又见单体模式，）
+6.单例模式（又称为单体模式，只允许实例化一次的对象类）
+A.静态变量单例
+  var Conf = (function(){
+    //私有变量
+    var conf ={
+      MAX_NUM:100,
+      MIN_MUM:1,
+      COUNT:1000
+    }
+    //返回取值器对象
+    return{
+      //取值器方法
+      get:function(name){
+        return conf[name]? conf[name]:null;
+      }
+    }
+  })();
+
+B.惰性单例（可以延迟创建）
+  //惰性载入单例
+  var LazySingle = (function(){
+    //单例实例引用
+    var instance = null;
+    //单例
+    function Single(){
+      //这里定义私有属性和方法
+      return {
+        publicMethod:function(){};
+        publicProperty:'1.0';
+      }
+    }
+    //获取单例对象接口
+    return function(){
+      //如果为创建单例则创建单例
+      if(!_instance){
+        _instance = Single();
+      }
+      //返回单例
+      return _instance;
+    }
+  })()
